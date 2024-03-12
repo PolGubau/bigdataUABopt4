@@ -12,7 +12,7 @@ cognoms = ["Tort","Soldevila","Luna","Muñoz","Fernandez","Hernandez", "Llopart"
 # Si la nota supera el 9, añadir el texto "Excelente".
 # Si la nota equivale a un 10, añadir el texto "matrícula de honor".
 # Columna 4: Diferencia de nota respecto a la mediana del grupo
-# Columna 4: Diferencia de nota (expreseda en porcentaje) respecto a la mediana del grupo
+# Columna 5: Diferencia de nota (expreseda en porcentaje) respecto a la mediana del grupo
 
 
 # Condiciones especiales
@@ -32,7 +32,7 @@ dataframe = pd.DataFrame(
     }
 )
 
-dataframe['Alumne'] = dataframe['Alumne'] + ' ' + dataframe['Cognom']
+dataframe['Alumne'] = dataframe['Alumne'] + ' ' + dataframe['Cognom'] # unimos las columnas de nombre y apellido
 
 # eliminamos la columna de apellidos
 dataframe = dataframe.drop(columns=['Cognom'])
@@ -41,21 +41,24 @@ dataframe['Nota'] = dataframe['Nota'] + 1 # le suamamos 1 a cada nota
 
 dataframe['Nota'] = dataframe['Nota'].apply(lambda x: 10 if x > 10 else x) # si la nota es mayor que 10, la nota es 10, si no, la nota es la misma
 
-dataframe['Nota en Text'] = dataframe['Nota'].apply(lambda x: 'Matrícula de honor' if x == 10 else 'Excelente' if x > 9 else 'Notable' if x >= 7 else 'Bien' if x >= 6 else 'Aprobado' if x >= 5 else 'Suspendido')
+dataframe['Nota en Text'] = dataframe['Nota'].apply(
+    lambda x: 'Matrícula de honor' if x == 10 
+    else 'Excelente' if x > 9 
+    else 'Notable' if x >= 7 
+    else 'Bien' if x > 6.1 
+     else 'Aprobado' if x >= 5
+    else 'Suspendido'
+    )
+# switch con lambda para las notas en texto
 
 
-dataframe['Diferencia'] = dataframe['Nota'] - dataframe['Nota'].median()
+averageOfClass = round(dataframe['Nota'].mean(),2) # media de las notas
+dataframe['Diferencia'] = dataframe['Nota'] - averageOfClass  # diferencia de la nota con la mediana
 
-dataframe['Diferencia %'] = dataframe['Diferencia'] / dataframe['Nota'].median() * 100 
+dataframe['Diferencia %'] = dataframe['Diferencia'] / dataframe['Nota'].mean() * 100 # diferencia en porcentaje
 
 # redondear la media a 2 decimales
 dataframe['Diferencia %'] = dataframe['Diferencia %'].apply(lambda x: round(x, 2))
-
-
-
-print ('Mediana del grupo:', dataframe['Nota'].median())
-
 print(dataframe)
-
 # download the file as csv
-dataframe.to_csv('ex1.csv', index=False)
+dataframe.to_csv('ex1.csv')
