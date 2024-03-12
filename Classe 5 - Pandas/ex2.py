@@ -77,13 +77,10 @@ print(bcolors.OKBLUE , "Mean views " ,  averageViews , bcolors.ENDC)
 
 # Localiza el vídeo más visto.
 print(bcolors.OKGREEN , "4. El vídeo más visto es: ",  averageViews , bcolors.ENDC)
-print(data[data['viewCount'] == data['viewCount'].max()])
+print(data[data['viewCount'] == data['viewCount'].max()]['title'])
 # Localiza el vídeo más comentado.
 print(bcolors.OKCYAN , "4. El vídeo más comentado es: ",  averageViews , bcolors.ENDC)
-
-nameOfMoreCommented = data[data['commentCount'] == data['commentCount'].max()]['title']
-
-print(nameOfMoreCommented)
+print(data[data['commentCount'] == data['commentCount'].max()]['title'])
 
 
 # Calcula la duración en segundos de cada video, e indica su desviación porcentual sobre el promedio de duración de los videos del canal.
